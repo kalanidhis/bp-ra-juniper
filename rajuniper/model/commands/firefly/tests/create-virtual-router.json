@@ -1,0 +1,768 @@
+{
+    "NonGlobal Multiple Routes": {
+        "type": "netconf",
+        "device": {"nodeType": "JuniperFireflyPerimeter"},
+        "out-params": {
+            "name": "Some NonGlobal Router",
+            "interfaces": [
+                "ge-0/0/1.0"
+            ],
+            "static_routes": [
+                {
+                    "next_hop": "192.168.16.1",
+                    "destination": "192.168.17.0/24"
+                },
+                {
+                    "next_hop": "192.168.106.1",
+                    "destination": "192.168.107.0/24"
+                }
+            ]
+        },
+        "out-expect": [
+            [
+                "<rpc>",
+                "<edit-config>",
+                "<target>",
+                "<candidate/>",
+                "</target>",
+                "<config>",
+                "<configuration>",
+                "<routing-instances>",
+                "<instance>",
+                "<name>Some NonGlobal Router</name>",
+                "<routing-options>",
+                "<static operation=\"replace\">",
+                "<route>",
+                "<name>192.168.17.0/24</name>",
+                "<next-hop>192.168.16.1</next-hop>",
+                "</route>",
+                "<route>",
+                "<name>192.168.107.0/24</name>",
+                "<next-hop>192.168.106.1</next-hop>",
+                "</route>",
+                "</static>",
+                "</routing-options>",
+                "</instance>",
+                "</routing-instances>",
+                "</configuration>",
+                "</config>",
+                "</edit-config>",
+                "</rpc>"
+            ],
+            [
+                "<rpc>",
+                "<edit-config>",
+                "<target>",
+                "<candidate/>",
+                "</target>",
+                "<config>",
+                "<configuration>",
+                "<routing-instances>",
+                "<instance>",
+                "<name>Some NonGlobal Router</name>",
+                "</instance>",
+                "</routing-instances>",
+                "</configuration>",
+                "</config>",
+                "</edit-config>",
+                "</rpc>"
+            ],
+            [
+                "<rpc>",
+                "<edit-config>",
+                "<target>",
+                "<candidate/>",
+                "</target>",
+                "<config>",
+                "<configuration>",
+                "<routing-instances>",
+                "<instance>",
+                "<name>Some NonGlobal Router</name>",
+                "<instance-type>virtual-router</instance-type>",
+                "<interface operation=\"replace\">",
+                "<name operation=\"replace\">ge-0/0/1.0</name>",
+                "</interface>",
+                "</instance>",
+                "</routing-instances>",
+                "</configuration>",
+                "</config>",
+                "</edit-config>",
+                "</rpc>"
+            ],
+            [
+                "<rpc message-id=\"0\" xmlns=\"urn:ietf:params:xml:ns:netconf:base:1.0\">",
+                "<commit>",
+                "</commit>",
+                "</rpc>"
+            ]
+        ],
+        "in-params": [
+            [
+                "<rpc-reply>",
+                "<ok/>",
+                "</rpc-reply>"
+            ],
+            [
+                "<rpc-reply>",
+                "<ok/>",
+                "</rpc-reply>"
+            ],
+            [
+                "<rpc-reply>",
+                "<ok/>",
+                "</rpc-reply>"
+            ],
+            [
+                "<rpc-reply>",
+                "<ok/>",
+                "</rpc-reply>"
+            ]
+        ]
+    },
+    "Global Multiple Routes": {
+        "type": "netconf",
+        "device": {"nodeType": "JuniperFireflyPerimeter"},
+        "out-params": {
+            "name": "Global Router",
+            "static_routes": [
+                {
+                    "next_hop": "192.168.16.1",
+                    "destination": "192.168.17.0/24"
+                },
+                {
+                    "next_hop": "192.168.106.1",
+                    "destination": "192.168.107.0/24"
+                }
+            ]
+        },
+        "out-expect": [
+            [
+                "<rpc>",
+                "<edit-config>",
+                "<target>",
+                "<candidate/>",
+                "</target>",
+                "<config>",
+                "<configuration>",
+                "<routing-options>",
+                "<static operation=\"replace\">",
+                "<route>",
+                "<name>192.168.17.0/24</name>",
+                "<next-hop>192.168.16.1</next-hop>",
+                "</route>",
+                "<route>",
+                "<name>192.168.107.0/24</name>",
+                "<next-hop>192.168.106.1</next-hop>",
+                "</route>",
+                "</static>",
+                "</routing-options>",
+                "</configuration>",
+                "</config>",
+                "</edit-config>",
+                "</rpc>"
+            ],
+            [
+                "<rpc>",
+                "<edit-config>",
+                "<target>",
+                "<candidate/>",
+                "</target>",
+                "<config>",
+                "<configuration>",
+                "</configuration>",
+                "</config>",
+                "</edit-config>",
+                "</rpc>"
+            ],
+            [
+                "<rpc>",
+                "<edit-config>",
+                "<target>",
+                "<candidate/>",
+                "</target>",
+                "<config>",
+                "<configuration>",
+                "</configuration>",
+                "</config>",
+                "</edit-config>",
+                "</rpc>"
+            ],
+            [
+                "<rpc message-id=\"0\" xmlns=\"urn:ietf:params:xml:ns:netconf:base:1.0\">",
+                "<commit>",
+                "</commit>",
+                "</rpc>"
+            ]
+        ],
+        "in-params": [
+            [
+                "<rpc-reply>",
+                "<ok/>",
+                "</rpc-reply>"
+            ],
+            [
+                "<rpc-reply>",
+                "<ok/>",
+                "</rpc-reply>"
+            ],
+            [
+                "<rpc-reply>",
+                "<ok/>",
+                "</rpc-reply>"
+            ],
+            [
+                "<rpc-reply>",
+                "<ok/>",
+                "</rpc-reply>"
+            ]
+        ]
+    },
+    "Global Incorrect Mask": {
+        "type": "netconf",
+        "device": {"nodeType": "JuniperFireflyPerimeter"},
+        "out-params": {
+            "name": "Global Router",
+            "static_routes": [
+                {
+                    "next_hop": "192.168.16.1",
+                    "destination": "192.168.17.0/8"
+                }
+            ]
+        },
+        "out-expect": [
+            [
+                "<rpc>",
+                "<edit-config>",
+                "<target>",
+                "<candidate/>",
+                "</target>",
+                "<config>",
+                "<configuration>",
+                "<routing-options>",
+                "<static operation=\"replace\">",
+                "<route>",
+                "<name>192.168.17.0/8</name>",
+                "<next-hop>192.168.16.1</next-hop>",
+                "</route>",
+                "</static>",
+                "</routing-options>",
+                "</configuration>",
+                "</config>",
+                "</edit-config>",
+                "</rpc>"
+            ],
+            [
+                "<rpc>",
+                "<edit-config>",
+                "<target>",
+                "<candidate/>",
+                "</target>",
+                "<config>",
+                "<configuration>",
+                "</configuration>",
+                "</config>",
+                "</edit-config>",
+                "</rpc>"
+            ],
+            [
+                "<rpc><discard-changes/></rpc>"
+            ]
+        ],
+        "in-params": [
+            [
+                "<rpc-reply>",
+                "<ok/>",
+                "</rpc-reply>"
+            ],
+            [
+                "<rpc-reply xmlns:junos=\"http://xml.juniper.net/junos/12.1X47/junos\" message-id=\"8\" xmlns=\"urn:ietf:params:xml:ns:netconf:base:1.0\">",
+                "<rpc-error>",
+                "<error-severity>error</error-severity>",
+                "<source-daemon>rpd</source-daemon>",
+                "<error-path>[edit routing-options static]</error-path>",
+                "<error-info>",
+                "<bad-element>route 192.168.17.0/8</bad-element>",
+                "</error-info>",
+                "<error-message>",
+                "RT: DEST: 192.168.17.0 MASK: 255.0.0.0 mask too short",
+                "</error-message>",
+                "</rpc-error>",
+                "<rpc-error>",
+                "<error-severity>error</error-severity>",
+                "<error-message>",
+                "configuration check-out failed",
+                "</error-message>",
+                "</rpc-error>",
+                "</rpc-reply>"
+            ],
+            [
+                "<rpc-reply>",
+                "<ok/>",
+                "</rpc-reply>"
+            ]
+        ]
+    },
+    "NonGlobal Incorrect Nexthop": {
+        "type": "netconf",
+        "device": {"nodeType": "JuniperFireflyPerimeter"},
+        "out-params": {
+            "name": "Router A1",
+            "interfaces": [
+                "ge-0/0/1.0"
+            ],
+            "static_routes": [
+                {
+                    "next_hop": "192.168.16.0/24",
+                    "destination": "192.168.17.0/24"
+                }
+            ]
+        },
+        "out-expect": [
+            [
+                "<rpc>",
+                "<edit-config>",
+                "<target>",
+                "<candidate/>",
+                "</target>",
+                "<config>",
+                "<configuration>",
+                "<routing-instances>",
+                "<instance>",
+                "<name>Router A1</name>",
+                "<routing-options>",
+                "<static operation=\"replace\">",
+                "<route>",
+                "<name>192.168.17.0/24</name>",
+                "<next-hop>192.168.16.0/24</next-hop>",
+                "</route>",
+                "</static>",
+                "</routing-options>",
+                "</instance>",
+                "</routing-instances>",
+                "</configuration>",
+                "</config>",
+                "</edit-config>",
+                "</rpc>"
+            ],
+            [
+                "<rpc><discard-changes/></rpc>"
+            ]
+        ],
+        "in-params": [
+            [
+                "<rpc-reply xmlns=\"urn:ietf:params:xml:ns:netconf:base:1.0\" xmlns:junos=\"http://xml.juniper.net/junos/12.1X47/junos\">",
+                "<rpc-error>",
+                "<error-severity>error</error-severity>",
+                "<error-message>",
+                "invalid input at '/24' in ip address '192.168.16.0/24'",
+                "</error-message>",
+                "</rpc-error>",
+                "<rpc-error>",
+                "<error-severity>error</error-severity>",
+                "<error-info>",
+                "<bad-element>192.168.16.0/24</bad-element>",
+                "</error-info>",
+                "<error-message>statement creation failed</error-message>",
+                "</rpc-error>",
+                "</rpc-reply>"
+            ],
+            [
+                "<rpc-reply>",
+                "<ok/>",
+                "</rpc-reply>"
+            ]
+        ]
+    },
+    "NonGlobal Multiple Routes with BGP": {
+        "type": "netconf",
+        "device": {"nodeType": "JuniperFireflyPerimeter"},
+        "out-params": {
+            "name": "Router A1",
+            "interfaces": [
+                "ge-0/0/1.0"
+            ],
+            "static_routes": [
+                {
+                    "next_hop": "192.168.16.1",
+                    "destination": "192.168.17.0/24"
+                },
+                {
+                    "next_hop": "192.168.106.1",
+                    "destination": "192.168.107.0/24"
+                }
+            ],
+            "protocols_bgp": {
+                "admin_state": "Disabled",
+                "description": "slimy",
+                "global_preference": 2345,
+                "groups": [
+                    {
+                        "group_name": "testgroup1",
+                        "description": "purple",
+                        "preference": 222,
+                        "type": "internal",
+                        "peer_as": 61234,
+                        "local_as": 12345,
+                        "import_policies": [
+                            "some_policy",
+                            "some_other_policy"
+                        ],
+                        "export_policies": [
+                            "a_policy",
+                            "another_policy"
+                        ],
+                        "allows": [
+                            { "allow_address": "13.13.13.13" },
+                            { "allow_address": "14.14.14.14" }
+                        ],
+                        "neighbors": [
+                            {
+                                "address": "192.168.10.1",
+                                "local_address": "192.168.120.1",
+                                "as_override": true
+                            },
+                            {
+                                "address": "192.168.10.3",
+                                "local_address": "192.168.120.3",
+                                "as_override": false
+                            }
+                        ]
+                    },
+                    {
+                        "group_name": "testgroup2",
+                        "description": "purple",
+                        "preference": 223,
+                        "type": "external",
+                        "peer_as": 61235,
+                        "local_as": 12346,
+                        "neighbors": [
+                            {
+                                "address": "192.168.10.2",
+                                "local_address": "192.168.120.2",
+                                "as_override": true
+                            }
+                        ]
+                    },
+                    {
+                        "group_name": "testgroup3",
+                        "description": "purple",
+                        "preference": 224,
+                        "type": "external",
+                        "peer_as": 61236,
+                        "local_as": 12347,
+                        "allows": [
+                            { "allow_address": "23.23.23.23" }
+                        ]
+                    }
+                ]
+            }
+        },
+        "out-expect": [
+            [
+                "<rpc>",
+                "<edit-config>",
+                "<target>",
+                "<candidate/>",
+                "</target>",
+                "<config>",
+                "<configuration>",
+                "<routing-instances>",
+                "<instance>",
+                "<name>Router A1</name>",
+                "<routing-options>",
+                "<static operation=\"replace\">",
+                "<route>",
+                "<name>192.168.17.0/24</name>",
+                "<next-hop>192.168.16.1</next-hop>",
+                "</route>",
+                "<route>",
+                "<name>192.168.107.0/24</name>",
+                "<next-hop>192.168.106.1</next-hop>",
+                "</route>",
+                "</static>",
+                "</routing-options>",
+                "</instance>",
+                "</routing-instances>",
+                "</configuration>",
+                "</config>",
+                "</edit-config>",
+                "</rpc>"
+            ],
+            [
+                "<rpc>",
+                "<edit-config>",
+                "<target>",
+                "<candidate/>",
+                "</target>",
+                "<config>",
+                "<configuration>",
+                "<routing-instances>",
+                "<instance>",
+                "<name>Router A1</name>",
+                "<protocols>",
+                "<bgp>",
+                "<disable operation=\"replace\"></disable>",
+                "<description operation=\"replace\">slimy</description>",
+                "<preference operation=\"replace\">2345</preference>",
+                "<group operation=\"replace\">",
+                    "<name>testgroup1</name>",
+                    "<description>purple</description>",
+                    "<preference>222</preference>",
+                    "<type>internal</type>",
+                    "<peer-as>61234</peer-as>",
+                    "<local-as>12345</local-as>",
+                    "<allow>13.13.13.13</allow>",
+                    "<allow>14.14.14.14</allow>",
+                    "<neighbor>",
+                        "<address>192.168.10.1</address>",
+                        "<local-address>192.168.120.1</local-address>",
+                        "<as-override operation=\"replace\"></as-override>",
+                    "</neighbor>",
+                    "<neighbor>",
+                        "<address>192.168.10.3</address>",
+                        "<local-address>192.168.120.3</local-address>",
+                        "<as-override operation=\"delete\"></as-override>",
+                    "</neighbor>",
+                    "<import>some_policy</import>",
+                    "<import>some_other_policy</import>",
+                    "<export>a_policy</export>",
+                    "<export>another_policy</export>",
+                "</group>",
+                "<group operation=\"replace\">",
+                    "<name>testgroup2</name>",
+                    "<description>purple</description>",
+                    "<preference>223</preference>",
+                    "<type>external</type>",
+                    "<peer-as>61235</peer-as>",
+                    "<local-as>12346</local-as>",
+                    "<neighbor>",
+                        "<address>192.168.10.2</address>",
+                        "<local-address>192.168.120.2</local-address>",
+                        "<as-override operation=\"replace\"></as-override>",
+                    "</neighbor>",
+                "</group>",
+                "<group operation=\"replace\">",
+                    "<name>testgroup3</name>",
+                    "<description>purple</description>",
+                    "<preference>224</preference>",
+                    "<type>external</type>",
+                    "<peer-as>61236</peer-as>",
+                    "<local-as>12347</local-as>",
+                    "<allow>23.23.23.23</allow>",
+                "</group>",
+                "</bgp>",
+                "</protocols>",
+                "</instance>",
+                "</routing-instances>",
+                "</configuration>",
+                "</config>",
+                "</edit-config>",
+                "</rpc>"
+            ],
+            [
+                "<rpc>",
+                "<edit-config>",
+                "<target>",
+                "<candidate/>",
+                "</target>",
+                "<config>",
+                "<configuration>",
+                "<routing-instances>",
+                "<instance>",
+                "<name>Router A1</name>",
+                "<instance-type>virtual-router</instance-type>",
+                "<interface operation=\"replace\">",
+                "<name operation=\"replace\">ge-0/0/1.0</name>",
+                "</interface>",
+                "</instance>",
+                "</routing-instances>",
+                "</configuration>",
+                "</config>",
+                "</edit-config>",
+                "</rpc>"
+            ],
+            [
+                "<rpc message-id=\"0\" xmlns=\"urn:ietf:params:xml:ns:netconf:base:1.0\">",
+                "<commit>",
+                "</commit>",
+                "</rpc>"
+            ]
+        ],
+        "in-params": [
+            [
+                "<rpc-reply>",
+                "<ok/>",
+                "</rpc-reply>"
+            ],
+            [
+                "<rpc-reply>",
+                "<ok/>",
+                "</rpc-reply>"
+            ],
+            [
+                "<rpc-reply>",
+                "<ok/>",
+                "</rpc-reply>"
+            ],
+            [
+                "<rpc-reply>",
+                "<ok/>",
+                "</rpc-reply>"
+            ]
+        ]
+    },
+    "NonGlobal Test": {
+        "type": "netconf",
+        "device": {"nodeType": "JuniperFireflyPerimeter"},
+        "out-params": {
+            "name": "RouterABC",
+            "interfaces": [
+                "ge-0/0/3.0",
+                "ge-0/0/4.0"
+            ],
+            "static_routes": [
+                {
+                    "destination": "10.0.0.0/24",
+                    "next_hop": "10.173.131.1"
+                }
+            ],
+            "bgp_routing": {
+                "router_as": 650066
+            },
+            "protocols_bgp": {
+                "groups": [
+                    {
+                        "group_name": "pe_routers",
+                        "peer_as": 65000,
+                        "local_as": 12345,
+                        "neighbors": [
+                            {
+                                "address": "10.173.130.1"
+                            },
+                            {
+                                "address": "10.173.130.2"
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        "out-expect": [
+            [
+                "<rpc>",
+                "<edit-config>",
+                "<target>",
+                "<candidate/>",
+                "</target>",
+                "<config>",
+                "<configuration>",
+                "<routing-instances>",
+                "<instance>",
+                "<name>RouterABC</name>",
+                "<routing-options>",
+                "<static operation=\"replace\">",
+                "<route>",
+                "<name>10.0.0.0/24</name>",
+                "<next-hop>10.173.131.1</next-hop>",
+                "</route>",
+                "</static>",
+                "<autonomous-system operation=\"replace\">",
+                "<as-number>650066</as-number>",
+                "</autonomous-system>",
+                "</routing-options>",
+                "</instance>",
+                "</routing-instances>",
+                "</configuration>",
+                "</config>",
+                "</edit-config>",
+                "</rpc>"
+            ],
+            [
+                "<rpc>",
+                "<edit-config>",
+                "<target>",
+                "<candidate/>",
+                "</target>",
+                "<config>",
+                "<configuration>",
+                "<routing-instances>",
+                "<instance>",
+                "<name>RouterABC</name>",
+                "<protocols>",
+                "<bgp>",
+                "<group operation=\"replace\">",
+                "<name>pe_routers</name>",
+                "<peer-as>65000</peer-as>",
+                "<local-as>12345</local-as>",
+                "<neighbor>",
+                "<address>10.173.130.1</address>",
+                "</neighbor>",
+                "<neighbor>",
+                "<address>10.173.130.2</address>",
+                "</neighbor>",
+                "</group>",
+                "</bgp>",
+                "</protocols>",
+                "</instance>",
+                "</routing-instances>",
+                "</configuration>",
+                "</config>",
+                "</edit-config>",
+                "</rpc>"
+            ],
+            [
+                "<rpc>",
+                "<edit-config>",
+                "<target>",
+                "<candidate/>",
+                "</target>",
+                "<config>",
+                "<configuration>",
+                "<routing-instances>",
+                "<instance>",
+                "<name>RouterABC</name>",
+                "<instance-type>virtual-router</instance-type>",
+                "<interface operation=\"replace\">",
+                "<name operation=\"replace\">ge-0/0/3.0</name>",
+                "</interface>",
+                "<interface operation=\"replace\">",
+                "<name operation=\"replace\">ge-0/0/4.0</name>",
+                "</interface>",
+                "</instance>",
+                "</routing-instances>",
+                "</configuration>",
+                "</config>",
+                "</edit-config>",
+                "</rpc>"
+            ],
+            [
+                "<rpc message-id=\"0\" xmlns=\"urn:ietf:params:xml:ns:netconf:base:1.0\">",
+                "<commit>",
+                "</commit>",
+                "</rpc>"
+            ]
+        ],
+        "in-params": [
+            [
+                "<rpc-reply>",
+                "<ok/>",
+                "</rpc-reply>"
+            ],
+            [
+                "<rpc-reply>",
+                "<ok/>",
+                "</rpc-reply>"
+            ],
+            [
+                "<rpc-reply>",
+                "<ok/>",
+                "</rpc-reply>"
+            ],
+            [
+                "<rpc-reply>",
+                "<ok/>",
+                "</rpc-reply>"
+            ]
+        ]
+    }
+}

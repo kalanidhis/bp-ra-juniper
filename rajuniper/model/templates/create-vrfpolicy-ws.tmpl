@@ -1,0 +1,91 @@
+{% macro get_vrfpolicy_xml_config(data) %}
+{% set policy_info = data['extension']['VrfPolicy'] %}
+<policy-options>
+    {%- for policy in policy_info["policy-statement"] -%}
+    {% set policy_statement_operation = policy['operation'] %}
+    {% if policy_statement_operation == "delete" -%}
+        <policy-statement operation="delete" >
+            <policy_name>{{ policy["name"] }}</policy_name>
+    {%- else -%}
+        <policy-statement>
+            <policy_name>{{ policy["name"] }}</policy_name>
+            {% for term_data in policy["terms"] %}
+            <term>
+                    <term_name>{{term_data["name"]}}</term_name>
+                    {% if term_data["from"] %}
+                    {% set from_data = term_data["from"]%}
+                    <from>
+                         {% for protocol_info in from_data["protocol"]%}
+                         <protocol>{{protocol_info}}</protocol>
+                         {% endfor %}
+                         {% for community in from_data["community"] %}
+                         <community>
+                            <value>{{ community }}</value>
+                         </community>
+                         {% endfor %}
+                         {% for prefix_list_filter_data in from_data["prefix-list-filter"] %}
+                         <prefix-list-filter>
+                             <list_name>{{prefix_list_filter_data["list_name"]}}</list_name>
+                             {% if prefix_list_filter_data["modifier"] %}
+                             <{{prefix_list_filter_data["modifier"]}}></{{prefix_list_filter_data["modifier"]}}>
+                             {% endif %}
+                         </prefix-list-filter>
+                         {% endfor %}
+                         {% if from_data["accept"] %}
+                         <accept/>
+                         {% endif %}
+                         {% if from_data["reject"] %}
+                         <reject/>
+                         {% endif %}
+                    </from>
+                    {% endif %}
+                    {% if term_data["then"] %}
+                    <then>
+                         {% for community_data in term_data["then"]["community"] %}
+                         <community>
+                              {% if community_data["operation"] %}
+                              <{{community_data["operation"]}}></{{community_data["operation"]}}>
+                              {% endif %}
+                              <community_name>{{ community_data["community_name"] }}</community_name>
+                         </community>
+                         {% endfor %}
+                         {% if term_data["then"]["next-hop"] %}
+                            <next-hop>
+                                {% if term_data["then"]["next-hop"]["self"] %}
+                                <self/>
+                                {% endif %}
+                            </next-hop>
+                         {% endif %}
+                         {% if term_data["then"]["accept"] %}
+                         <accept/>
+                         {% endif %}
+                         {% if term_data["then"]["reject"] %}
+                         <reject/>
+                         {% endif %}
+                    </then>
+                    {% endif %}
+            </term>
+            {% endfor %}
+    {%- endif %}
+     </policy-statement>
+    {%- endfor %}
+    {%- for community_data in policy_info["community"] -%}
+    {% set community_operation = community_data['operation'] %}
+        {% if community_operation == "delete" -%}
+         <community operation="delete" >
+             <community_name>{{ community_data["community_name"] }}</community_name>
+        {%- else -%}
+         <community>
+             <community_name>{{ community_data["community_name"] }}</community_name>
+             {% if community_data["members"] %}
+             {% for member in community_data["members"] %}
+             <members>
+                  <value>{{ member }}</value>
+             </members>
+             {% endfor %}
+             {% endif %}
+         {%- endif %}
+         </community>
+     {%- endfor %}
+</policy-options>
+{% endmacro %}

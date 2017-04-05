@@ -1,0 +1,14 @@
+<rpc>
+<get-config>
+<source><running/></source>
+<filter type="subtree">
+<configuration>
+    <routing-instances>
+     {% if data['name'] %}
+     <name>{{ data['name'] }}</name>
+     {% endif %}
+    </routing-instances>
+</configuration>
+</filter>
+</get-config>
+</rpc>

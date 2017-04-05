@@ -1,0 +1,26 @@
+{
+    "product": "urn:cyaninc:bp:product:juniper_interface",
+    "resource": "juniper.resourceTypes.Interface",
+    "type": "bpprov_full",
+    "provider_resource_id_field": "name",
+    "device_namespace_props": ["physical_interface"],
+    "commands": {
+        "list": {
+            "command": "get-interfaces-full.json"
+        },
+        "get": {
+            "command": "get-interface-full.json"
+        },
+        "put": {
+            "command": "create-interface-full.json"
+        },
+        "post": {
+            "command": "create-interface-full.json",
+            "delay_s": 10,
+            "num_tries":10
+        },
+        "delete": {
+            "command": "delete-interface-auto.json"
+        }
+    }
+}

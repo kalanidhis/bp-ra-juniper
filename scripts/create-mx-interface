@@ -1,0 +1,27 @@
+#!/bin/bash
+
+INTERFACE_NAME="ae0.2172"
+
+source dockerdev.sh
+
+PRODUCT_ID=$(jcurl ${MARKET_URL}/products?q=resourceTypeId:juniper.resourceTypes.Interface | jparse [\"items\"][0][\"id\"])
+DEVICE_RID=$(jcurl $MARKET_URL/resources?resourceTypeId=juniper.resourceTypes.Device\&q=label:MX240 | jparse [\"items\"][0][\"id\"])
+
+cat <<EOF > /tmp/resource.json
+{
+"productId": "${PRODUCT_ID}",
+"label": "${INTERFACE_NAME}",
+"discovered": false,
+"properties": {
+    "device": "${DEVICE_RID}",
+    "name": "${INTERFACE_NAME}",
+    "description": "Ciena test interface",
+    "ipv4_addresses": [ "4.16.145.92/31" ],
+    "vlan_ids": [ 2172 ]
+}
+}
+EOF
+
+jcurl -d @/tmp/resource.json ${MARKET_URL}/resources | jpp
+
+rm -f /tmp/resource.json

@@ -1,0 +1,35 @@
+{
+    "endpoint": "netconf",
+    "type": "bpprov.runners.simple.Sequence",
+    "tests": [
+        "commands/firefly/tests/get-security-configs.json"
+    ],
+    "endpoint-parameters": {
+        "template": "firefly/get-security-configs-command.tmpl"
+    },
+    "out-path": [
+    ],
+    "in-path": [
+        {
+            "type": "bpprov.translators.dict.Listify",
+            "parameters": {
+                "paths": [
+                    "configuration.security.policies.policy",
+                    "configuration.security.policies.policy..policy",
+                    "configuration.security.policies.policy..policy..match.source-address",
+                    "configuration.security.policies.policy..policy..match.destination-address",
+                    "configuration.security.policies.policy..policy..match.application",
+                    "configuration.security.zones.security-zone",
+                    "configuration.security.zones.security-zone..interfaces",
+                    "configuration.security.zones.security-zone..address-book"
+                ]
+            }
+        },
+        {
+            "type": "bpprov.translators.template.Json",
+            "parameters": {
+                "template": "firefly/get-security-configs.tmpl"
+            }
+        }
+    ]
+}

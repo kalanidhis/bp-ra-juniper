@@ -1,0 +1,63 @@
+{#
+    Inputs:
+        name: Name of the routing instance to modify
+        static_routes: static routes to create or modify
+        bgp_routing: BGP properties to create or modify
+#}
+
+<rpc>
+    <edit-config>
+        <target>
+            <candidate/>
+        </target>
+        <config>
+            <configuration>
+            {%- if 'name' in data -%}
+                {%- set routerName = data['name'] -%}
+            {%- else -%}
+                {%- set routerName = '' -%}
+            {%- endif -%}
+            {%- if routerName != 'Global Router' -%}
+            <routing-instances>
+                <instance>
+                    <name>{{routerName}}</name>
+            {%- endif -%}
+                <routing-options>
+                {% if data.get('static_routes') is defined %}
+                    <static operation="replace">
+                        {% for route in data['static_routes'] %}
+                        <route>
+                            <name>{{ route['destination'] }}</name>
+                            <next-hop>{{ route['next_hop'] }}</next-hop>
+                        </route>
+                        {% endfor %}
+                    </static>
+                {% endif %}
+                {% if data.get('bgp_routing') is defined %}
+                    {% if 'router_id' in data['bgp_routing'] %}
+                        <router-id operation="replace">{{ data['bgp_routing']['router_id'] }}</router-id>
+                    {% endif %}
+                    {% if 'router_as' in data['bgp_routing'] %}
+                        <autonomous-system operation="replace">
+                            <as-number>{{ data['bgp_routing']['router_as'] }}</as-number>
+                        </autonomous-system>
+                    {% endif %}
+                    {% if 'confederation' in data['bgp_routing'] %}
+                        {% set confederation = data['bgp_routing']['confederation'] %}
+                        <confederation operation="replace">
+                            <confederation-as>{{ confederation['as_number'] }}</confederation-as>
+                            {% for member in confederation['members'] %}
+                                <members>{{ member }}</members>
+                            {% endfor %}
+                        </confederation>
+                    {% endif %}
+                {% endif %}
+                </routing-options>
+            {%- if routerName != 'Global Router' -%}
+                </instance>
+            </routing-instances>
+            {%- endif -%}
+            </configuration>
+        </config>
+    </edit-config>
+</rpc>

@@ -1,0 +1,18 @@
+{
+    "resource_types": [
+        "resources/definitions/resource_type_tpefre_networkfunction.tosca",
+        "resources/definitions/resource_type_session_profile.tosca",
+        "resources/definitions/resource_type_firewall.tosca",
+        "resources/definitions/resource_type_virtualrouter.tosca",
+        "resources/definitions/resource_type_interface.tosca",
+        "resources/definitions/resource_type_vrf_policy.tosca",
+        "resources/definitions/resource_type_routinginstance.tosca",
+        "resources/definitions/resource_type_vlanidentifier.tosca",
+        "resources/definitions/resource_type_interfacevlan.tosca",
+        "resources/definitions/resource_type_l3_vpn.tosca",
+        "resources/definitions/resource_type_l2_circuit.tosca",
+        "resources/definitions/resource_type_tpefre_tpe.tosca",
+        "resources/definitions/resource_type_l2circuit_endpoint.tosca",
+        "resources/definitions/resource_type_l2circuit_oam.tosca"
+    ]
+}

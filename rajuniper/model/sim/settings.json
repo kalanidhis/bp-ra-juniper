@@ -1,0 +1,11 @@
+{
+   "manhole": {
+        "active": true,
+        "port": 9997
+    },
+    "jinja-environment": {
+        "extensions": [
+            "jinja2.ext.do"
+        ]
+    }
+}

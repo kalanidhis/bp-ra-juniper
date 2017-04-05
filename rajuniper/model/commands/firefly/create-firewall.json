@@ -1,0 +1,41 @@
+{
+    "endpoint": "null",
+    "type": "bpprov.runners.simple.Sequence",
+    "tests": [
+        "commands/firefly/tests/create-firewall.json",
+        "commands/firefly/tests/create-firewall-error.json"
+    ],
+    "endpoint-parameters": {
+    },
+    "out-schema": "firefly/out-create-firewall.json",
+    "out-path": [
+    ],
+    "in-path": [
+        {
+            "type": "bpprov.translators.aggregator.Call",
+            "parameters": {
+                "command": "create-applications.json",
+                "input": {
+                    "templateType": "file",
+                    "data": "firefly/create-applications-in.tmpl"
+                }
+            }
+        },
+        {
+            "type": "bpprov.translators.aggregator.Call",
+            "parameters": {
+                "command": "create-security-configs.json",
+                "input": {
+                    "templateType": "file",
+                    "data": "firefly/create-security-configs-in.tmpl"
+                }
+            }
+        },
+        {
+            "type": "bpprov.translators.aggregator.Call",
+            "parameters": {
+                "command": "commit.json"
+            }
+        }
+    ]
+}

@@ -1,0 +1,281 @@
+"$schema"   = "http://cyaninc.com/json-schemas/tosca-lite-v1/definition-module#"
+title       = "Virtual Router"
+package     = juniper
+version     = "1.0"
+description = "This document defines a Virtual Router resource type"
+authors     = [ "Jay Hsu (jhsu@cyaninc.com)" ]
+
+imports {
+  Vnf = tosca.resourceTypes.VirtualNetworkFunction
+  Container = tosca.capabilityTypes.Container
+}
+
+resourceTypes {
+
+  VirtualRouter {
+    derivedFrom = Vnf
+    title = "Virtual Router"
+    description = """
+      This resource type represents a Virtual Router.
+    """
+
+    properties {
+      device {
+        title = "Device Name"
+        description = "Name of the device of this Virtual Router"
+        type = string
+      }
+
+      name {
+        title = "Name"
+        description = "Name of this Virtual Router"
+        type = string
+      }
+
+      interfaces {
+        title = "Interfaces"
+        description = "Interfaces belong to this Virtual Router"
+        type = array
+        items.type = string
+        optional = true
+      }
+
+      static_routes {
+        title = "Static Routes"
+        description = "Static routing table of this Virtual Router"
+        type = array
+        items {
+          type = object
+          properties = {
+            destination {
+              title = "Destination Prefix"
+              description = "Destination prefix of this static route (e.g. 192.168.1.0/24)"
+              type = string
+              format = ipv4-prefix
+            }
+
+            next_hop = {
+              title = "Next Hop"
+              description = "Next Hop of this static route (e.g. 10.20.30.40)"
+              type = string
+              format = ipv4-address
+            }
+          }
+        }
+        optional = true
+      }
+      bgp_routing {
+        title = "BGP Routing Information"
+        description = "Properties related to BGP"
+        type = object
+        optional = true
+
+        properties {
+
+          router_id {
+            title = "BGP Router ID"
+            description = "BGP router ID of the customer (e.g., 192.168.10.254)"
+            type = string
+            format = ipv4-address
+            optional = true
+          }
+
+          router_as {
+            title = "BGP Router AS Number"
+            description = "BGP AS number of router (e.g., 65000)"
+            type = integer
+            format = bgp-as
+          }
+
+          confederation {
+            title = "BGP Confederation Information"
+            description = "BGP confederation information"
+            type = object
+            optional = true
+            properties {
+              as_number {
+                  title = "BGP Confederation AS Number"
+                  description = "BGP confederation AS number of router (e.g., 17 or 1234.24543)"
+                  type = integer
+                  format = bgp-as
+              }
+              members {
+                  title = "BGP Confederation Members"
+                  description = "BGP confederation members (e.g., 17 or 1234.24543)"
+                  type = array
+                  items.type = integer
+                  format = bgp-as
+              }
+            }
+          }
+        }
+      }
+      protocols_bgp {
+        title = "BGP Protocol Information"
+        description = "Properties related to BGP protocol"
+        type = object
+        optional = true
+
+        properties {
+          admin_state {
+            title = "BGP Protocol Admin State"
+            description = "BGP admin state (Enabled/Disabled)"
+            type = string
+            enum = [ "Enabled", "Disabled" ]
+            optional = true
+          }
+          description {
+            title = "BGP Description"
+            description = "description text"
+            type = string
+            optional = true
+          }
+          global_preference {
+            title = "BGP Global Preference"
+            description = "degree of preference"
+            type = integer
+            optional = true
+          }
+          groups {
+            title = "BGP Groups"
+            description = "BGP groups"
+            type = array
+            optional = true
+            items {
+              type = object
+              properties {
+                group_name {
+                  title = "BGP Group Name"
+                  description = "group name"
+                  type = string
+                  optional = false
+                }
+                description {
+                  title = "BGP Group Description"
+                  description = "description text"
+                  type = string
+                  optional = true
+                }
+                preference {
+                  title = "Group Preference"
+                  description = "degree of preference"
+                  type = integer
+                  optional = true
+                }
+                type {
+                  title = "BGP Group Type"
+                  description = "group type"
+                  type = string
+                  enum = [ "internal", "external" ]
+                  optional = false
+                }
+                peer_as {
+                  title = "Group Peer AS Number"
+                  description = "ASN of peer (e.g., 65000)"
+                  type = integer
+                  format = bgp-as
+                }
+                local_as {
+                  title = "Local AS Number"
+                  description = "Local ASN (e.g., 65000)"
+                  type = integer
+                  format = bgp-as
+                  optional = true
+                }
+                allows {
+                  title = "BGP Group Dynamic Peers"
+                  description = "BGP group dynamic peers"
+                  type = array
+                  optional = true
+                  items {
+                    type = object
+                    properties {
+                      allow_address {
+                        title = "BGP Dynamic Peer Address"
+                        description = "IP address of dynamic peer (e.g., 192.168.10.0/8)"
+                        type = string
+                        format = ipv4-interface
+                        optional = false
+                      }
+                    }
+                  }
+                }
+                neighbors {
+                  title = "BGP Group Static Peers"
+                  description = "BGP group static peers"
+                  type = array
+                  optional = true
+                  items {
+                    type = object
+                    properties {
+                      neighbor_name {
+                        title = "BGP Group Static Peer Name"
+                        description = "BGP group static peer name"
+                        type = string
+                        optional = false
+                      }
+                      address {
+                        title = "BGP Static Peer Address"
+                        description = "IP address of static peer (e.g., 192.168.10.254)"
+                        type = string
+                        format = ipv4-address
+                        optional = true
+                      }
+                      local_address {
+                        title = "BGP Static Peer Local Address"
+                        description = "Local IP address of static peer (e.g., 192.168.10.254)"
+                        type = string
+                        format = ipv4-address
+                        optional = true
+                      }
+                      as_override {
+                        title = "BGP Group Static Peer AS Override"
+                        description = "BGP group static peer AS override flag"
+                        type = boolean
+                        optional = true
+                      }
+                    }
+                  }
+                }
+                import_policies {
+                  title = "BGP Group Import Policies"
+                  description = "BGP group import policies"
+                  type = array
+                  items.type = string
+                  optional = true
+                }
+                export_policies {
+                  title = "BGP Group Export Policies"
+                  description = "BGP group export policies"
+                  type = array
+                  items.type = string
+                  optional = true
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
+    capabilities {
+      routing {
+        title = "Routing"
+        description = "A virtual router can perform routing for interfaces."
+        type = Container
+        resourceTypes = [juniper.resourceTypes.Interface]
+      }
+    }
+
+    requirements {
+      vr_device {
+        title = "Device"
+        description = "A virtual router is hosted on a device."
+        type = Container
+        minimum = 1
+        maximum = 1
+        resourceTypes = [juniper.resourceTypes.NetworkFunction]
+      }
+    }
+  }
+}

@@ -1,0 +1,299 @@
+# The "id" is used to uniquely identify the RP implementation. The RP uses the
+# identifier to identify itself when communicating with bpocore. A UUID or
+# fully qualified URN is recommended.
+id: 807f05b4ff924a18bf61827e8d63b8b3
+
+# The organization which maintains the RP. This is included when the RP is
+# registered against bpocore. A URL is recommended.
+vendor: http://cyaninc.com
+
+# The vendor's license for the RP. This is included when the RP is registered
+# against bpocore. A URL is recommended.
+license: http://cyaninc.com/license
+
+# Contact information for the maintainer/owner of the RP implementation. This
+# is included when the RP is registered against bpocore.
+contacts:
+    - name: Jay Hsu
+      email: jay.hsu@cyaninc.com
+
+# Maximum of 32 characters. Used for presentation purposes when a human
+# readable name is required.
+title: Juniper
+
+# Used for presentation purposes when a long form human readable description
+# of the RP is required.
+description: Managing Interfaces, Virtual Routers, Firewall and NAT configuration on Juniper Network Functions
+
+# The "version" should follow semantic versioning. Currently ignored.
+version: 0.0.1
+
+# Location where RP specific type definitions are stored.
+# This value can be absolute or relative to this file however it
+# must be resolvable when deployed. If this value is null then no definitions
+# will be onboarded.
+definitions: ./definitions
+
+# Locacation where the UI schema files for the resource types and the domains are stored
+# The UI schema files for resource types should be stored in the base directory of the specified
+# location, while the UI schema files for the domains should be stored in the "domain-types"
+# subdirectory of the location.
+# This value can be absolute or relative to this file however it
+# must be resolvable when deployed. If this value is null then no UI schema
+# will be onboarded.
+ui_schema: ./ui-schema
+
+# New schemas
+ddui_schema: "./ddui-schema"
+
+# Base resources types that are onboarded by an application image and may not be immediately available.
+dependent_types: [
+  'tosca.resourceTypes.NetworkFunction',
+  'tosca.resourceTypes.SessionProfile',
+  'tosca.resourceTypes.TerminationPointEncapsulation',
+  'tosca.resourceTypes.PhysicalOpticalLayerTermination',
+  'tosca.resourceTypes.BaseService'
+]
+
+# Domain definitions specify the types of domains supported by this RP.
+# Developers must define their own domains. See
+# https://github.cyanoptics.com/Orchestrate/rpsdk-python for more details. The
+# RP should support at least one domain type.
+domains:
+  - id: "urn:cyaninc:bp:domain:juniper"
+    title: "Juniper"                                      # max 32 chars
+    description: "Domain for managing Juniper devices"
+    domain_settings:
+          - connection_status: true
+
+    # specifies configuration for resource types managed in this domain,
+    # currently only the id must be specified but in this future may be
+    # extended to help drive specialization in the synchronization framework
+    resource_types:
+      - id: "juniper.resourceTypes.L3VPN"
+        discoveryStrategy:
+            - strategyType: "async"
+              pollingMode: "noPolling"
+              pollingSettings:
+                - immediateDeletion: true
+                  syncTimeoutMs: 310000
+        apiSettings:
+          - serverTimeoutMs: 300000
+            maxConnections: 4
+            maxHttpRetries: 0
+            idleTimeoutMs: 3600000
+      - id: "juniper.resourceTypes.L2Circuit"
+        discoveryStrategy:
+            - strategyType: "async"
+              pollingMode: "noPolling"
+              pollingSettings:
+                - immediateDeletion: true
+                  syncTimeoutMs: 310000
+        apiSettings:
+          - serverTimeoutMs: 300000
+            maxConnections: 4
+            maxHttpRetries: 0
+            idleTimeoutMs: 3600000
+      - id: "juniper.resourceTypes.NetworkFunction"
+        discoveryStrategy:
+          - strategyType: "sync"
+            pollingMode: "listOnly"
+            pollingSettings:
+              - pollingIntervalMs: 40000
+                immediateDeletion: true
+                verifyMissingList: true
+        apiSettings:
+          - serverTimeoutMs: 60000
+            maxConnections: 4
+            maxHttpRetries: 0
+            idleTimeoutMs: 3600000
+      - id: "juniper.resourceTypes.SessionProfile"
+        discoveryStrategy:
+            - strategyType: "async"
+              pollingMode: "noPolling"
+              pollingSettings:
+                - immediateDeletion: true
+      - id: "juniper.resourceTypes.Interface"
+        discoveryStrategy:
+            - strategyType: "async"
+              pollingMode: "noPolling"
+              pollingSettings:
+                - immediateDeletion: true
+        apiSettings:
+          - serverTimeoutMs: 100000
+            maxConnections: 4
+            maxHttpRetries: 0
+            idleTimeoutMs: 3600000
+      - id: "juniper.resourceTypes.VrfPolicy"
+        discoveryStrategy:
+            - strategyType: "async"
+              pollingMode: "noPolling"
+              pollingSettings:
+                - immediateDeletion: true
+        apiSettings:
+          - serverTimeoutMs: 100000
+            maxConnections: 4
+            maxHttpRetries: 0
+            idleTimeoutMs: 3600000
+      - id: "juniper.resourceTypes.RoutingInstance"
+        discoveryStrategy:
+            - strategyType: "async"
+              pollingMode: "noPolling"
+              pollingSettings:
+                - immediateDeletion: true
+        apiSettings:
+          - serverTimeoutMs: 100000
+            maxConnections: 4
+            maxHttpRetries: 0
+            idleTimeoutMs: 3600000
+      - id: "juniper.resourceTypes.InterfaceVlan"
+        discoveryStrategy:
+            - strategyType: "async"
+              pollingMode: "noPolling"
+              pollingSettings:
+                - immediateDeletion: true
+        apiSettings:
+          - serverTimeoutMs: 100000
+            maxConnections: 4
+            maxHttpRetries: 0
+            idleTimeoutMs: 3600000
+      - id: "juniper.resourceTypes.VlanIdentifier"
+        discoveryStrategy:
+            - strategyType: "async"
+              pollingMode: "noPolling"
+              pollingSettings:
+                - immediateDeletion: true
+        apiSettings:
+          - serverTimeoutMs: 100000
+            maxConnections: 4
+            maxHttpRetries: 0
+            idleTimeoutMs: 3600000
+      - id: "juniper.resourceTypes.TerminationPoint"
+        discoveryStrategy:
+           - strategyType: "sync"
+             pollingMode: "listOnly"
+             pollingSettings:
+               - pollingIntervalMs: 300000
+                 syncTimeoutMs: 310000
+      - id: "juniper.resourceTypes.L2CircuitEndpoint"
+        discoveryStrategy:
+            - strategyType: "sync"
+              pollingMode: "getOnly"
+              pollingSettings:
+                - pollingIntervalMs: 240000
+                  immediateDeletion: false
+                  deletePollingIntervalMs: 30000
+                  deletePollingLimit: 2
+                  syncTimeoutMs: 120000
+                  verifyMissingList: false   
+      - id: "juniper.resourceTypes.L2CircuitOAM"
+        discoveryStrategy:
+            - strategyType: "async"
+              pollingMode: "noPolling"
+              pollingSettings:
+                - pollingIntervalMs: 120000
+                  immediateDeletion: true
+                  syncTimeoutMs: 120000
+                  verifyMissingList: false   
+#      - id: "juniper.resourceTypes.VirtualRouter"
+#        discoveryStrategy:
+#          - strategyType: "sync"
+#            pollingMode: "listOnly"
+#            pollingSettings:
+#              - pollingIntervalMs: 40000
+#                immediateDeletion: true
+#                verifyMissingList: true
+#        apiSettings:
+#          - serverTimeoutMs: 60000
+#            maxConnections: 4
+#            maxHttpRetries: 0
+#            idleTimeoutMs: 3600000
+#      - id: "juniper.resourceTypes.Firewall"
+#        discoveryStrategy:
+#          - strategyType: "sync"
+#            pollingMode: "listOnly"
+#            pollingSettings:
+#              - pollingIntervalMs: 40000
+#                immediateDeletion: true
+#                verifyMissingList: true
+#        apiSettings:
+#          - serverTimeoutMs: 60000
+#            maxConnections: 4
+#            maxHttpRetries: 0
+#            idleTimeoutMs: 3600000
+
+# Relationship definitions specify how relationships between resources managed
+# by this RP are formed. See
+# https://github.cyanoptics.com/Orchestrate/rpsdk-python for more details.
+relationships:
+  - sourceTypeId: "juniper.resourceTypes.Interface"        # resource types involved in relationship
+    targetTypeId: "juniper.resourceTypes.NetworkFunction"
+    capabilityName: ifc_host                               # identifies endpoint names in relationship
+    requirementName: ifc_device
+    relationshipTypeId: "tosca.relationshipTypes.HostedOn" # identifies type of relationship
+    fieldKind: "provider"                                  # identicates what the field represent
+    fieldLocator: "device"                                 # the field in the resource properties identifying the far end
+  - sourceTypeId: "juniper.resourceTypes.VrfPolicy"        # resource types involved in relationship
+    targetTypeId: "juniper.resourceTypes.NetworkFunction"
+    capabilityName: vp_host                                # identifies endpoint names in relationship
+    requirementName: vp_device
+    relationshipTypeId: "tosca.relationshipTypes.HostedOn" # identifies type of relationship
+    fieldKind: "provider"                                  # identicates what the field represent
+    fieldLocator: "device"                                 # the field in the resource properties identifying the far end
+#  - sourceTypeId: "juniper.resourceTypes.Interface"
+#    targetTypeId: "juniper.resourceTypes.Interface"
+#    capabilityName: virtual_interfaces                     # identifies endpoint names in relationship
+#    requirementName: physical_interface
+#    relationshipTypeId: "tosca.relationshipTypes.HostedOn" # identifies type of relationship
+#    fieldKind: "provider"                                  # identicates what the field represent
+#    fieldLocator: "physical_interface"                     # the field in the resource properties identifying the far end
+  - sourceTypeId: "juniper.resourceTypes.RoutingInstance"  # resource types involved in relationship
+    targetTypeId: "juniper.resourceTypes.NetworkFunction"
+    capabilityName: ri_host                                # identifies endpoint names in relationship
+    requirementName: ri_device
+    relationshipTypeId: "tosca.relationshipTypes.HostedOn" # identifies type of relationship
+    fieldKind: "provider"                                  # identicates what the field represent
+    fieldLocator: "device"                                 # the field in the resource properties identifying the far end
+  - sourceTypeId: "juniper.resourceTypes.InterfaceVlan"    # resource types involved in relationship
+    targetTypeId: "juniper.resourceTypes.NetworkFunction"
+    capabilityName: iv_host                                # identifies endpoint names in relationship
+    requirementName: iv_device
+    relationshipTypeId: "tosca.relationshipTypes.HostedOn" # identifies type of relationship
+    fieldKind: "provider"                                  # identicates what the field represent
+    fieldLocator: "device"                                 # the field in the resource properties identifying the far end
+  - sourceTypeId: "juniper.resourceTypes.VlanIdentifier"   # resource types involved in relationship
+    targetTypeId: "juniper.resourceTypes.NetworkFunction"
+    capabilityName: vi_host                                # identifies endpoint names in relationship
+    requirementName: vi_device
+    relationshipTypeId: "tosca.relationshipTypes.HostedOn" # identifies type of relationship
+    fieldKind: "provider"                                  # identicates what the field represent
+    fieldLocator: "device"                                 # the field in the resource properties identifying the far end
+  - sourceTypeId: "juniper.resourceTypes.L3VPN"  # resource types involved in relationship
+    targetTypeId: "juniper.resourceTypes.TerminationPoint"
+    capabilityName: hostedFC                               # identifies endpoint names in relationship
+    requirementName: BoundingTPE
+    relationshipTypeId: "tosca.relationshipTypes.HostedOn"  # identifies type of relationship
+    fieldKind: "provider"                                   # identicates what the field represent
+    fieldLocator: "tpe"                                  # the field in the resource properties identifying the far end
+  - sourceTypeId: "juniper.resourceTypes.TerminationPoint"  # resource types involved in relationship
+    targetTypeId: "juniper.resourceTypes.NetworkFunction"
+    capabilityName: boundedBy                               # identifies endpoint names in relationship
+    requirementName: contained
+    relationshipTypeId: "tosca.relationshipTypes.HostedOn"  # identifies type of relationship
+    fieldKind: "provider"                                   # identicates what the field represent
+    fieldLocator: "device"                                  # the field in the resource properties identifying the far end
+
+#  - sourceTypeId: "juniper.resourceTypes.VirtualRouter"
+#    targetTypeId: "juniper.resourceTypes.NetworkFunction"
+#    capabilityName: vr_host                                              # identifies endpoint names in relationship
+#    requirementName: vr_device
+#    relationshipTypeId: "tosca.relationshipTypes.HostedOn"   # identifies type of relationship
+#    fieldKind: "provider"                                                # identicates what the field represent
+#    fieldLocator: "device"                                               # the field in the resource properties identifying the far end
+#  - sourceTypeId: "juniper.resourceTypes.Firewall"
+#    targetTypeId: "juniper.resourceTypes.NetworkFunction"
+#    capabilityName: fw_host                                              # identifies endpoint names in relationship
+#    requirementName: fw_device
+#    relationshipTypeId: "tosca.relationshipTypes.HostedOn"   # identifies type of relationship
+#    fieldKind: "provider"                                                # identicates what the field represent
+#    fieldLocator: "device"                                               # the field in the resource properties identifying the far end

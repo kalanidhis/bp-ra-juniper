@@ -1,0 +1,25 @@
+{
+    "endpoint": "netconf",
+    "type": "bpprov.runners.simple.Sequence",
+    "tests": [
+        "commands/firefly/tests/get-routing-options.json"
+    ],
+    "endpoint-parameters": {
+        "template": "firefly/get-routing-options-command.tmpl"
+    },
+    "out-schema": "firefly/out-get-routing-options.json",
+    "out-path": [
+    ],
+    "in-path": [
+        {
+            "type": "bpprov.translators.dict.Listify",
+            "parameters": {"paths": ["configuration.routing-instances..routing-options.static.route"]}
+        },
+        {
+            "type": "bpprov.translators.template.Json",
+            "parameters": {
+                "template": "firefly/get-routing-options.tmpl"
+            }
+        }
+    ]
+}

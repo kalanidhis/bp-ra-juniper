@@ -1,0 +1,180 @@
+"$schema" = "http://cyaninc.com/json-schemas/tosca-lite-v1/definition-module#"
+title = "Policy resource type definition"
+package = juniper
+version = "1.0"
+description = "This document defines routing policy type."
+authors = ["Sonny Rasmussen (sorasmus@contractor.ciena.com)"]
+
+imports {
+  Root = tosca.resourceTypes.Root
+  Container = tosca.capabilityTypes.Container
+}
+
+resourceTypes {
+
+  VrfPolicy {
+    derivedFrom = Root
+    title = "VRFPolicy"
+    description = """
+    A routing policy.
+    """
+
+    properties {
+
+      device {
+        type = string
+        title = "Device"
+        description = "Identifies the device hosting this VRF policy."
+        optional = false
+      }
+
+      name {
+        type = string
+        title = "Policy Name"
+        description = ""
+        optional = false
+      }
+
+      terms {
+        type = array
+        title = "Terms"
+        optional = true
+        items {
+          type = object
+          properties {
+            name {
+              title = "Name"
+              description = "term name"
+              type = string
+            }
+
+            from {
+              title = "From"
+              description = "From entry"
+              type = object
+              properties {
+                route_filter {
+                  title = "Route Filter"
+                  description = "List of routes to match"
+                  type = object
+                  properties {
+                    address {
+                      title = "Address"
+                      description = "Address/Mask - n.n.n.n/mm"
+                      type = string
+                      optional = false
+                    }
+
+                    exact {
+                      title = "Exact"
+                      description = "Exactly match the prefix length"
+                      type = boolean
+                      optional = true
+                    }
+                  }
+                  optional = true
+                }
+
+                community {
+                  title = "Community"
+                  description = "BGP Community"
+                  type = string
+                  optional = true
+                }
+
+                protocol {
+                  title = "Protocol"
+                  description = "Protocol from which route was learned"
+                  type = string
+                  optional = true
+                }
+              }
+              optional = true
+            }
+
+            then {
+              title = "Then"
+              description = "Then entry"
+              type = object
+              properties {
+                community {
+                  title = "Community"
+                  description = "BGP community properties associated with a route"
+                  type = object
+                  properties {
+                    community_name {
+                      title = "BGP Community"
+                      description = "Name to identify a BGP community"
+                      type = string
+                      optional = false
+                    }
+
+                    operation {
+                      title = "Operation"
+                      description = "Community operation"
+                      type = string
+                      enum = [ "=", "set", "+", "add", "-", "delete" ]
+                      optional = false
+                    }
+
+                  }
+                  optional = true
+                }
+
+                accept {
+                  title = "Accept"
+                  description = "Accept"
+                  type = boolean
+                  optional = true
+                }
+              }
+              optional = true
+            }
+          }
+        }
+      }
+
+      from {
+        title = "From"
+        description = "From entry"
+        type = object
+        properties {
+          protocol {
+            title = "Protocol"
+            description = "Protocol from which route was learned"
+            type = string
+            optional = true
+          }
+        }
+        optional = true
+      }
+
+      then {
+        title = "Then"
+        description = "Then entry"
+        type = object
+        properties {
+          accept {
+            title = "Accept"
+            description = "Accept"
+            type = boolean
+            optional = true
+          }
+        }
+        optional = true
+      }
+    }
+
+    requirements {
+
+      vp_device {
+        title = "Device"
+        description = "A policy is hosted by the device"
+        type = Container
+        minimum = 1
+        maximum = 1
+        resourceTypes = [juniper.resourceTypes.NetworkFunction]
+      }
+    }
+  }
+}

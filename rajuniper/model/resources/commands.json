@@ -1,0 +1,16 @@
+{
+    "urn:cyaninc:bp:product:juniper_vr": "virtualrouter.json",
+    "urn:cyaninc:bp:product:juniper_l2_circuit": "l2_circuit.json",
+    "urn:cyaninc:bp:product:juniper_firewall": "firewall.json",
+    "urn:cyaninc:bp:product:juniper_interface": "interface.json",
+    "urn:cyaninc:bp:product:juniper_vrfpolicy": "vrfpolicy.json",
+    "urn:cyaninc:bp:product:juniper_routinginstance": "routinginstance.json",
+    "urn:cyaninc:bp:product:juniper_interfacevlan": "interfacevlan.json",
+    "urn:cyaninc:bp:product:juniper_vlanidentifier": "vlanidentifier.json",
+    "urn:cyaninc:bp:product:juniper_sessionprofile": "sessionprofile.json",
+    "urn:cyaninc:bp:product:juniper": "networkfunction.json",
+    "urn:cyaninc:bp:product:juniper_l3vpn": "l3vpn.json",
+    "urn:cyaninc:bp:product:juniper:terminationpoint": "terminationpoint.json",
+    "urn:cyaninc:bp:product:juniper_l2circuitendpoint": "l2circuit_endpoint.json",
+    "urn:cyaninc:bp:product:juniper_l2circuitoam": "l2circuit_oam.json"
+}

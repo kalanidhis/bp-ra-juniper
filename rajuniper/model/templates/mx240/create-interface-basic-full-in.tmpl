@@ -1,0 +1,27 @@
+{
+{% set props = data['properties'] if 'properties' in data else data%}
+{% if 'admin_status' in props %}
+    "admin_status": "{{ props['admin_status'] }}",
+{% endif %}
+{% if 'mtu' in props %}
+        "mtu": "{{ props['mtu'] }}",
+{% endif %}
+{% if 'ipv4_addresses' in props %}
+    "ipv4_addresses": [
+    {% for address in props['ipv4_addresses'] %}
+        "{{ address }}"{% if not loop.last %},{% endif %}
+    {% endfor %}
+    ],
+{% endif %}
+{% if 'description' in props %}
+    "description": "{{ props.description }}",
+{% endif %}
+{% if "ccc_policer" in props %}
+    "ccc_policer": {{props["ccc_policer"] | to_json }},
+{% endif %}
+{% if 'vlan_ids' in props %}
+    "vlan_id": "{{ props.vlan_ids[0] }}",
+{% endif %}
+    "interface": "{{ props.name.split('.')[0] }}",
+    "unit": "{{ props.name.split('.')[1] }}"
+}

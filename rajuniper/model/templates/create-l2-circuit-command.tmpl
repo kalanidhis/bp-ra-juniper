@@ -1,0 +1,50 @@
+{% from "create-interface-ws.tmpl" import get_interface_xml_config %}
+{% from "utils.tmpl" import convert_tp_to_native_name %}
+<rpc>
+<edit-config><target><candidate/></target>
+<config><configuration>
+{% if data.get('properties', {}).get('extension', {}).get('interface', None) %}
+{{ get_interface_xml_config(data['properties']) | indent(4)}}
+{% endif %}
+    <protocols>
+        <l2circuit>
+         {% set neighbor_operation = data['properties']['operation'] %}
+         {% if neighbor_operation == "delete" -%}
+            <neighbor operation="delete" >
+                <name>{{ data['properties']['neighbor'] }}</name>
+         {%- else -%}
+            <neighbor>
+                <name>{{ data.properties.neighbor }}</name>
+                <interface>
+                    {% set data = data["properties"] %}
+                    <name>{{ convert_tp_to_native_name(data["interface-name"]) }}</name>
+                    {% if data["description"] %}
+                    <description>{{ data["description"]}}</description>
+                    {% endif %}
+                    {% if data['virtual-circuit-id'] %}
+                    <virtual-circuit-id>{{ data['virtual-circuit-id'] }}</virtual-circuit-id>
+                    {% endif %}
+                    {% if data['ignore-mtu-mismatch'] %}
+                    <ignore-mtu-mismatch/>
+                    {% endif %}
+                    {% if data['encapsulation-type'] %}
+                    <encapsulation-type>{{ data['encapsulation-type'] }}</encapsulation-type>
+                    {% endif %}
+                    {# TBD could not find tag in XML #}
+                    {% if data["no-control-word"] %}
+                    <no-control-word/>
+                    {% endif %}
+                    {% if data['mtu'] %}
+                    <mtu>{{ data['mtu'] }}</mtu>
+                    {% endif %}
+                        {% if data['ignore-encapsulation-mismatch'] %}
+                    <ignore-encapsulation-mismatch/>
+                    {% endif %}
+                </interface>
+            {%- endif %}
+            </neighbor>
+        </l2circuit>
+    </protocols>
+</configuration></config>
+</edit-config>
+</rpc>

@@ -1,0 +1,74 @@
+{
+    "endpoint": "null",
+    "type": "bpprov.runners.simple.Sequence",
+    "tests": [
+        "commands/firefly/tests/get-virtual-router.json"
+    ],
+    "endpoint-parameters": {
+    },
+    "out-path": [
+    ],
+    "in-path": [
+        {
+            "type": "bpprov.translators.aggregator.Call",
+            "parameters": {
+                "command": "get-routing-options.json",
+                "output": {
+                    "patches": [
+                        {
+                            "from": "/data",
+                            "to": "/data"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "type": "bpprov.translators.aggregator.Call",
+            "parameters": {
+                "command": "get-protocols-bgp.json",
+                "input": {
+                    "templateType": "json-dict",
+                    "header": {},
+                    "data": {
+                        "name": "{{ header.userParam.name }}"
+                    }
+                },
+                "output": {
+                    "patches": [
+                        {
+                            "from": "/data/protocols_bgp",
+                            "to": "/data/protocols_bgp"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "description": "Get the interfaces of the routing instance",
+            "type": "bpprov.translators.aggregator.Call",
+            "parameters": {
+                "command": "get-virtual-router-interfaces.json",
+                "input": {
+                    "templateType": "json-dict",
+                    "header": {},
+                    "data": {
+                        "name": "{{ header.userParam.name }}"
+                    }
+                },
+                "output": {
+                    "patches": [
+                        {
+                            "from": "/data/interfaces",
+                            "to": "/data/interfaces"
+                        },
+                        {
+                            "from": "/data/name",
+                            "to": "/data/name"
+                        }
+                    ]
+                }
+            }
+        }
+    ]
+}

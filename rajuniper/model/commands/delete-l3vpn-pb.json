@@ -1,0 +1,30 @@
+{
+    "type": "bpprov.runners.simple.Sequence",
+    "endpoint": "null",
+    "endpoint-parameters": 
+    {
+        
+    },
+    "tests": 
+    [
+     ],
+    "out-path": 
+    [
+        {
+            "type": "rajuniper.translators.jsonpath.JsonPointerTranslator",
+            "parameters": 
+            {
+                "converter": "/playbook/converters/l3vpn.json"
+            }
+        },
+        {
+            "type": "bpprov.translators.branch.FanOutRunner",
+            "parameters": 
+            {
+                "filename": "/commands/l3vpn/delete-l3vpn.json"
+            }
+        }
+    ],
+    "in-path": [
+    ]
+}

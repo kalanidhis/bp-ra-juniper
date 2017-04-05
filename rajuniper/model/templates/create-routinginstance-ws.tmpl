@@ -1,0 +1,143 @@
+{% macro get_routing_instance_xml_config(data) %}
+{% from "utils.tmpl" import convert_tp_to_native_name%}
+{% set instance_data = data['attachment']['connection']['routing-instance'] %}
+{% set instance_operation = instance_data['operation'] %}
+<routing-instances>
+    {% if instance_operation == "delete" -%}
+        <instance operation="delete" >
+            <name>{{ instance_data["name"] }}</name>
+    {%- else -%}
+        <instance>
+            <name>{{ instance_data["name"] }}</name>
+        {% if instance_data["description"] %}
+            <description>{{ instance_data["description"] }}</description>
+        {% endif %}
+        {% if instance_data["instance-type"] %}
+            <instance-type>{{ instance_data["instance-type"] }}</instance-type>
+        {% endif %}
+        {% for interface in instance_data["interface"] %}
+            <interface>
+                <name>{{ convert_tp_to_native_name(interface) }}</name>
+            </interface>
+        {% endfor %}
+        {% if instance_data["route-distinguisher"] %}
+            <route-distinguisher>
+                <rd-type>{{ instance_data["route-distinguisher"] }}</rd-type>
+            </route-distinguisher>
+        {% endif %}
+        {% for import_policy in instance_data["vrf-import"] %}
+            <vrf-import>{{ import_policy }}</vrf-import>
+        {% endfor %}
+        {% for export_policy in instance_data["vrf-export"] %}
+            <vrf-export>{{ export_policy }}</vrf-export>
+        {% endfor %}
+        {% if instance_data["vrf-target"] %}
+            <vrf-target>
+                 <community>{{ instance_data["vrf-target"]["community"] }}</community>
+            </vrf-target>
+        {% endif %}
+        {% if instance_data["vrf-table-label"] %}
+                 <vrf-table-label></vrf-table-label>
+        {% endif %}
+        {%  if instance_data["routing-options"] %}
+            <routing-options>
+                {% if instance_data.get("routing-options", {}).get("auto_export", None) %}
+                <auto-export/>
+                {% endif %}
+                {%  if instance_data["routing-options"]["maximum-prefixes"] %}
+                {% set maximum_prefixes_data = instance_data["routing-options"]["maximum-prefixes"] %}
+                <maximum-prefixes>
+                    {%  if maximum_prefixes_data["limit"] %}
+                    <limit>{{maximum_prefixes_data["limit"]}}</limit>
+                    {% endif %}
+                    {%  if maximum_prefixes_data["threshold"] %}
+                    <threshold>{{maximum_prefixes_data["threshold"]}}</threshold>
+                    {% endif %}
+                </maximum-prefixes>
+                {% endif %}
+                {%  if instance_data["routing-options"]["static"] %}
+                <static>
+                {% for route in instance_data["routing-options"]["static"]["route"] %}
+                    <route>
+                        <name>{{ route["name"] }}</name>
+                        <nexthop>{{ route["nexthop"] }}</nexthop>
+                    </route>
+                {% endfor %}
+                </static>
+                {% endif %}
+             </routing-options>
+        {% endif %}
+        {% if instance_data["protocols_bgp"] %}
+            <protocols>
+                <bgp>
+                {% for group in instance_data["protocols_bgp"]["groups"] %}
+                    <group>
+                    {% if group["name"] %}
+                        <name>{{ group["name"] }}</name>
+                    {% endif %}
+                    {% if group["type"] %}
+                        <type>{{ group["type"] }}</type>
+                    {% endif %}
+                    {% if group["peer-as"] %}
+                        <peer-as>{{ group["peer-as"] }}</peer-as>
+                    {% endif %}
+                    {% if group["as-override"] %}
+                        <as-override></as-override>
+                    {% endif %}
+                    {% for export_policy in group["export_policies"] %}
+                        <export>{{ export_policy }}</export>
+                    {% endfor %}
+                    {% for neighbor in group["neighbors"] %}
+                        <neighbor>
+                        {% if neighbor["address"] %}
+                            <name>{{ neighbor["address"] }}</name>
+                        {% endif %}
+                        {% if neighbor["authentication-key"] %}
+                            <authentication-key>{{ neighbor["authentication-key"] }}</authentication-key>
+                        {% endif %}
+                        {% if neighbor["peer-as"] %}
+                            <peer-as>{{ neighbor["peer-as"] }}</peer-as>
+                        {% endif %}
+                        {% if neighbor["as-override"] %}
+                            <as-override></as-override>
+                        {% endif %}
+                        {% if neighbor["local-address"] %}
+                            <local-address>{{ neighbor["local-address"] }}</local-address>
+                        {% endif %}
+                        </neighbor>
+                    {% endfor %}
+                    {% if instance_data["family"] %}
+                    {% set prefix_limit = instance_data["family"]["inet"]["unicast"]["prefix-limit"] %}
+                        <family>
+                            <inet>
+                                <unicast>
+                                    <prefix-limit>
+                                    {% if prefix_limit["maximum"] %}
+                                        <maximum>{{ prefix_limit["maximum"] }}</maximum>
+                                    {% endif %}
+                                    {% if prefix_limit["teardown"] %}
+                                         <teardown>
+                                         {% if prefix_limit["teardown"]["limit-threshold"] %}
+                                              <limit-threshold>{{ prefix_limit["teardown"]["limit-threshold"] }}</limit-threshold>
+                                         {% endif %}
+                                         {% if prefix_limit["teardown"]["idle-timeout"] %}
+                                               <idle-timeout>
+                                                   <timeout>{{ prefix_limit["teardown"]["idle-timeout"] }}</timeout>
+                                               </idle-timeout>
+                                          {% endif %}
+                                          </teardown>
+                                     {% endif %}
+                                    </prefix-limit>
+                                </unicast>
+                            </inet>
+                        </family>
+                     {% endif %}
+                    </group>
+                {% endfor %}
+                </bgp>
+            </protocols>
+        {% endif %}
+    {%- endif %}
+        </instance>
+    </routing-instances>
+{% endmacro %}

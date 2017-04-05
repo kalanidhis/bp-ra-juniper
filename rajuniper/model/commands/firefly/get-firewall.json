@@ -1,0 +1,41 @@
+{
+    "endpoint": "null",
+    "type": "bpprov.runners.simple.Sequence",
+    "tests": [
+        "commands/firefly/tests/get-firewall.json"
+    ],
+    "endpoint-parameters": {
+    },
+    "out-path": [
+    ],
+    "in-path": [
+        {
+            "type": "bpprov.translators.aggregator.Call",
+            "parameters": {
+                "command": "get-security-configs.json",
+                "output": {
+                    "patches": [
+                        {
+                            "from": "/data",
+                            "to": "/data"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "type": "bpprov.translators.aggregator.Call",
+            "parameters": {
+                "command": "get-applications.json",
+                "output": {
+                    "patches": [
+                        {
+                            "from": "/data",
+                            "to": "/data/applications"
+                        }
+                    ]
+                }
+            }
+        }
+    ]
+}

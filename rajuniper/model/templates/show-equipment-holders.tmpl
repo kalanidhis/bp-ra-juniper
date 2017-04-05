@@ -1,0 +1,68 @@
+[
+  {% for rack in data %}
+    {
+      "id": "{{ "equipmentHolder_" + rack }}",
+      "name": "{{ rack }}",
+      "userLabel": "{{ rack }}",
+      "owner": "",
+      "alarmReportingIndicator": false,
+      "containingEquipment": null,
+      "holderType": "rack",
+      "expectedOrInstalledEquipment": "{{ "equipment_" + rack }}",
+      "acceptableEquipmentTypeList": [],
+      "alarmStatus": "Indeterminate",
+      "holderState": "INSTALLED_AND_EXPECTED",
+      "nativeEMSName": ""
+    }
+      {% for shelf in data[rack]["shelves"] %}
+        ,{
+          "id": "{{ "equipmentHolder_" + rack + "_" + shelf }}",
+          "name": "{{ "0-" + shelf }}",
+          "userLabel": "{{ "0-" + shelf }}",
+          "owner": "",
+          "alarmReportingIndicator": false,
+          "containingEquipment": "{{ "equipment_" + rack }}",
+          "holderType": "slot",
+          "expectedOrInstalledEquipment": "{{ "equipment_" + rack + "_" + shelf }}",
+          "acceptableEquipmentTypeList": [],
+          "alarmStatus": "Indeterminate",
+          "holderState": "INSTALLED_AND_EXPECTED",
+          "nativeEMSName": ""
+        }
+        {% for slot in data[rack]["shelves"][shelf]["slots"] %}
+            ,{
+              "id": "{{ "equipmentHolder_" + rack + "_" + shelf + "_" + slot }}",
+              "name": "{{ "0-" + slot }}",
+              "userLabel": "{{ "0-" + slot }}",
+              "owner": "",
+              "alarmReportingIndicator": false,
+              "containingEquipment": "{{ "equipment_" + rack + "_" + shelf }}",
+              "holderType": "slot",
+              "expectedOrInstalledEquipment": "{{ "equipment_" + rack + "_" + shelf + "_" + slot }}",
+              "acceptableEquipmentTypeList": [],
+              "alarmStatus": "Indeterminate",
+              "holderState": "INSTALLED_AND_EXPECTED",
+              "nativeEMSName": ""
+            }
+         {% if "slots" in data[rack]["shelves"][shelf]["slots"][slot] %}
+            {% for subSlot in data[rack]["shelves"][shelf]["slots"][slot]["slots"] %}
+                ,{
+                  "id": "{{ "equipmentHolder_" + rack + "_" + shelf + "_" + slot + "_" + subSlot}}",
+                  "name": "{{ slot + "-" + subSlot }}",
+                  "userLabel": "{{ slot + "-" + subSlot }}",
+                  "owner": "",
+                  "alarmReportingIndicator": false,
+                  "containingEquipment": "{{ "equipment_" + rack + "_" + shelf + "_" + slot}}",
+                  "holderType": "slot",
+                  "expectedOrInstalledEquipment": "{{ "equipment_" + rack + "_" + shelf + "_" + slot + "_" + subSlot}}",
+                  "acceptableEquipmentTypeList": [],
+                  "alarmStatus": "Indeterminate",
+                  "holderState": "INSTALLED_AND_EXPECTED",
+                  "nativeEMSName": ""
+                }
+             {% endfor %}
+         {% endif %}
+       {% endfor %}
+     {% endfor %}
+  {% endfor %}
+]

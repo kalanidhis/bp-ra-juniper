@@ -1,0 +1,90 @@
+[{
+    "resource_type": "juniper.resourceTypes.VirtualRouter",
+    "provider_product_id": "urn:cyaninc:bp:product:juniper_vr",
+    "title": "Virtual Router",
+    "active": false,
+    "provider_data": {}
+}, {
+    "resource_type": "juniper.resourceTypes.Firewall",
+    "provider_product_id": "urn:cyaninc:bp:product:juniper_firewall",
+    "title": "Firewall",
+    "active": false,
+    "provider_data": {}
+}, {
+    "resource_type": "juniper.resourceTypes.Interface",
+    "provider_product_id": "urn:cyaninc:bp:product:juniper_interface",
+    "title": "Interface",
+    "active": true,
+    "provider_data": {}
+}, {
+    "resource_type": "juniper.resourceTypes.VrfPolicy",
+    "provider_product_id": "urn:cyaninc:bp:product:juniper_vrfpolicy",
+    "title": "VRF Policy",
+    "active": true,
+    "provider_data": {}
+}, {
+    "resource_type": "juniper.resourceTypes.RoutingInstance",
+    "provider_product_id": "urn:cyaninc:bp:product:juniper_routinginstance",
+    "title": "Routing Instance",
+    "active": true,
+    "provider_data": {}
+}, {
+    "resource_type": "juniper.resourceTypes.InterfaceVlan",
+    "provider_product_id": "urn:cyaninc:bp:product:juniper_interfacevlan",
+    "title": "Interface VLAN",
+    "active": true,
+    "provider_data": {}
+}, {
+    "resource_type": "juniper.resourceTypes.VlanIdentifier",
+    "provider_product_id": "urn:cyaninc:bp:product:juniper_vlanidentifier",
+    "title": "VLAN Identifier",
+    "active": true,
+    "provider_data": {}
+}, {
+    "resource_type": "juniper.resourceTypes.SessionProfile",
+    "provider_product_id": "urn:cyaninc:bp:product:juniper_sessionprofile",
+    "title": "Session Profile",
+    "active": true,
+    "provider_data": {}
+}, {
+    "resource_type": "juniper.resourceTypes.NetworkFunction",
+    "provider_product_id": "urn:cyaninc:bp:product:juniper",
+    "title": "Network Function",
+    "active": true,
+    "provider_data": {},
+    "constraints": {
+        "typeGroup": {
+            "constant": "/typeGroups/Juniper"
+        }
+    }
+}, {
+    "resource_type": "juniper.resourceTypes.L3VPN",
+    "provider_product_id": "urn:cyaninc:bp:product:juniper_l3vpn",
+    "title": "Layer 3 Virtual Private Network Service",
+    "active": true,
+    "provider_data": {}
+}, {
+    "resource_type": "juniper.resourceTypes.L2Circuit",
+    "provider_product_id": "urn:cyaninc:bp:product:juniper_l2_circuit",
+    "title": "Layer 2 Virtual Private Network Service",
+    "active": true,
+    "provider_data": {}
+}, {
+    "resource_type": "juniper.resourceTypes.TerminationPoint",
+    "provider_product_id": "urn:cyaninc:bp:product:juniper:terminationpoint",
+    "title": "Termination Point",
+    "active": true,
+    "provider_data": {}
+}, {
+    "resource_type": "juniper.resourceTypes.L2CircuitEndpoint",
+    "provider_product_id": "urn:cyaninc:bp:product:juniper_l2circuitendpoint",
+    "title": "L2Circuit Endpoint Config for Windstream",
+    "active": true,
+    "provider_data": {}
+}, {
+    "resource_type": "juniper.resourceTypes.L2CircuitOAM",
+    "provider_product_id": "urn:cyaninc:bp:product:juniper_l2circuitoam",
+    "title": "L2Circuit OAM Config for Windstream",
+    "active": true,
+    "provider_data": {}
+}]

@@ -1,0 +1,20 @@
+{
+    "product": "urn:cyaninc:bp:product:juniper_l2_circuit",
+    "resource": "juniper.resourceTypes.L2Circuit",
+    "type": "bpprov_full",
+    "provider_resource_id_field": "name",
+    "device_namespace_props": ["interface"],
+    "commands": {
+        "post": {
+            "command": "create-l2-circuit.json",
+            "returns_resource": true
+        },
+        "put": {
+           "command": "create-l2-circuit.json",
+           "returns_resource": true
+        },
+        "delete": {
+            "command": "delete-l2-circuit.json"
+        }
+    }
+}

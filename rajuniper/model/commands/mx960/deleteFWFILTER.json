@@ -1,0 +1,12 @@
+{
+    "endpoint": "netconf",
+    "type": "bpprov.runners.simple.Sequence",
+    "tests": [
+        "commands/mx960/tests/deleteFWFILTER.json"
+    ],
+    "endpoint-parameters": {
+        "template": "mx960/deleteFWFILTER.tmpl"
+    },
+    "in-path": [],
+    "out-path": []
+}

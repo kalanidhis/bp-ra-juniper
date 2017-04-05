@@ -1,0 +1,37 @@
+{
+    "endpoint": "netconf",
+    "type": "bpprov.runners.simple.Sequence",
+    "tests": [
+        "commands/mx240/tests/get-vrfpolicy-full.json"
+    ],
+    "endpoint-parameters": {
+        "template": "mx240/get-vrfpolicy-full-command.tmpl"
+    },
+    "out-path": [
+    ],
+    "in-path": [
+        {
+            "type": "bpprov.translators.dict.ReMap",
+            "parameters": {
+                "mapping": {
+                    "policy-statement": "data.configuration.policy-options.policy-statement"
+                }
+            }
+        },
+        {
+            "type": "bpprov.translators.dict.Listify",
+            "parameters": {
+                "paths": [
+                    "policy-statement..term"
+                ]
+            }
+        },
+        {
+            "type": "bpprov.translators.template.Json",
+            "parameters": {
+                "template": "mx240/get-vrfpolicy-full.tmpl",
+                "as_object": true
+            }
+        }
+    ]
+}

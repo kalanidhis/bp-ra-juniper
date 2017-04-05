@@ -1,0 +1,31 @@
+{
+    "patterns": [
+        {
+            "command": "<get[\\w-]>",
+            "match-reason": "<error-message>(.*?)</error-message>",
+            "onError": [],
+            "pattern": "<error-severity>error</error-severity>"
+        }, 
+        {
+            "command": "<(config|commit)>",
+            "match-reason": "<error-message>(.*?)</error-message>", 
+            "onError": [
+                {
+                    "write": "<rpc><discard-changes/></rpc>"
+                },
+                {
+                    "write": "<rpc><unlock-configuration></unlock-configuration></rpc>"
+                }
+            ], 
+            "pattern": "<error-severity>error</error-severity>"
+        },
+        {
+            "command": "<l2circuit>",
+            "override-reason": "Configuration not found",
+            "onError": [],
+            "pattern": "<configuration>\\n</configuration>",
+            "error-dict": {"statusCode": 404}
+        }
+
+    ]
+}

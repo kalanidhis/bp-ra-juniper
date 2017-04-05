@@ -1,0 +1,14 @@
+{
+    "netconf": {
+        "commandTimeout": 300,
+        "reconnectPeriod": 30,
+        "rx_delimiter": "]]>]]>\n" 
+    },
+    "snmp": {
+    },
+    "kafka": {
+        "hostname" : "kafka"
+    },
+    "null": {
+    }
+}

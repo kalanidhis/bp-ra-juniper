@@ -1,0 +1,41 @@
+#!/bin/bash
+
+INSTANCE_NAME="EXPORT-TO-AUTOMATE-CIENA-TEST"
+
+source dockerdev.sh
+
+PRODUCT_ID=$(jcurl ${MARKET_URL}/products?q=resourceTypeId:juniper.resourceTypes.VrfPolicy | jparse [\"items\"][0][\"id\"])
+DEVICE_RID=$(jcurl $MARKET_URL/resources?resourceTypeId=juniper.resourceTypes.Device\&label=MX240 | jparse [\"items\"][0][\"id\"])
+
+cat <<EOF > /tmp/resource.json
+{
+"productId": "${PRODUCT_ID}",
+"label": "VRF Policy: ${INSTANCE_NAME}",
+"discovered": false,
+"properties": {
+    "device": "${DEVICE_RID}",
+    "name": "${INSTANCE_NAME}",
+    "terms": [
+    {
+        "name": "FROM-Internet-VRF",
+        "from": {
+            "route_filter": {
+                "address": "0.0.0.0/0",
+                "exact": true
+            }
+        },
+        "then": {
+            "community": {
+                "community_name": "RT-UP2",
+                "operation": "add"
+            }
+        }
+    }
+    ]
+}
+}
+EOF
+
+jcurl -d @/tmp/resource.json ${MARKET_URL}/resources | jpp
+
+rm -f /tmp/resource.json

@@ -1,0 +1,165 @@
+{%- macro doNeighbor(neighbor) -%}
+    {%- set needCommaNeighbor = false -%}
+    {%- if neighbor.get('address') -%}
+        {%- if needCommaNeighbor -%},{%- endif -%}
+        {%- set needCommaNeighbor = true -%}
+        "address": "{{ neighbor['address'] }}"
+    {%- endif -%}
+    {%- if neighbor.get('local-address') -%}
+        {%- if needCommaNeighbor -%},{%- endif -%}
+        {%- set needCommaNeighbor = true -%}
+        "local_address": "{{ neighbor['local-address'] }}"
+    {%- endif -%}
+    {%- if neighbor.get('as-override') -%}
+        {%- if neighbor['as-override'] -%}
+            {%- if needCommaNeighbor -%},{%- endif -%}
+            {%- set needCommaNeighbor = true -%}
+            "as_override": true
+        {%- else -%}
+            {%- if needCommaNeighbor -%},{%- endif -%}
+            {%- set needCommaNeighbor = true -%}
+            "as_override": false
+        {%- endif -%}
+    {%- else -%}
+        {%- if needCommaNeighbor -%},{%- endif -%}
+        {%- set needCommaNeighbor = true -%}
+        "as_override": false
+    {%- endif %}
+{%- endmacro -%}
+
+{%- macro doGroup(group) -%}
+    {%- set needCommaGroup = false -%}
+    {%- if group.get('name') -%}
+        "group_name": "{{group['name']}}"
+        {%- set needCommaGroup = true -%}
+    {%- endif -%}
+    {%- if group.get('description') %}
+        {%- if needCommaGroup -%},{%- endif -%}
+        {%- set needCommaGroup = true -%}
+        "description": "{{group['description']}}"
+    {%- endif -%}
+    {%- if group.get('preference') %}
+        {%- if needCommaGroup -%},{%- endif -%}
+        {%- set needCommaGroup = true -%}
+        "preference": {{group['preference']}}
+    {%- endif -%}
+    {%- if group.get('type') -%}
+        {%- if needCommaGroup -%},{%- endif -%}
+        {%- set needCommaGroup = true -%}
+        "type": "{{group['type']}}"
+    {%- endif -%}
+    {%- if group.get('peer-as') -%}
+        {%- if needCommaGroup -%},{%- endif -%}
+        {%- set needCommaGroup = true -%}
+        "peer_as": {{group['peer-as']}}
+    {%- endif -%}
+    {%- if group.get('local-as') -%}
+        {%- if needCommaGroup -%},{%- endif -%}
+        {%- set needCommaGroup = true -%}
+        {%- set localAs = group['local-as'] -%}
+        "local_as": {{localAs['as-number']}}
+    {%- endif -%}
+    {%- if group['allow'] -%}
+        {%- if needCommaGroup -%},{%- endif -%}
+        {%- set needCommaGroup = true -%}
+        "allows": [
+            {%- if group['allow'] is string -%}
+                {"allow_address": "{{group['allow']}}" }
+            {%- else -%}
+                {%- for allow in group['allow'] -%}
+                    {"allow_address": "{{allow}}"} {%- if not loop.last -%},{%- endif -%}
+                {%- endfor -%}
+            {%- endif -%}
+        ]
+    {%- endif -%}
+    {%- if group['neighbor'] -%}
+        {%- if needCommaGroup -%},{%- endif -%}
+        {%- set needCommaGroup = true -%}
+        "neighbors": [
+        {%- if group['neighbor'] is mapping -%}
+            { {{ doNeighbor(group['neighbor']) }} }
+        {%- else %}
+            {%- for neighbor in group['neighbor'] -%}
+                { {{ doNeighbor(neighbor) }} }{%- if not loop.last -%},{%- endif -%}
+            {%- endfor -%}
+        {%- endif -%}
+        ]
+    {%- endif -%}
+    {%- if group['import'] -%}
+        {%- if needCommaGroup -%},{%- endif -%}
+        {%- set needCommaGroup = true -%}
+        "import_policies": [
+            {%- if group['import'] is string -%}
+                "{{group['import']}}"
+            {%- else -%}
+                {%- for import in group['import'] -%}
+                    "{{import}}"{%- if not loop.last -%},{%- endif -%}
+                {%- endfor -%}
+            {%- endif -%}
+        ]
+    {%- endif -%}
+    {%- if group['export'] -%}
+        {%- if needCommaGroup -%},{%- endif -%}
+        {%- set needCommaGroup = true -%}
+        "export_policies": [
+            {%- if group['export'] is string -%}
+                "{{group['export']}}"
+            {%- else -%}
+                {%- for export in group['export'] -%}
+                    "{{export}}"{%- if not loop.last -%},{%- endif -%}
+                {%- endfor -%}
+            {%- endif -%}
+        ]
+    {%- endif -%}
+{%- endmacro -%}
+{%- macro doProtocols(protocols) -%}
+"protocols_bgp": {
+    {%- if protocols.get('bgp') -%}
+        {%- set bgp = protocols['bgp'] -%}
+        {%- if bgp.get('disable') -%}
+            "admin_state" : "Disabled",
+        {%- else -%}
+            "admin_state" : "Enabled",
+        {%- endif -%}
+        {%- if bgp.get('description') -%}
+            "description": "{{bgp['description']}}",
+        {%- endif %}
+        {%- if bgp.get('preference') -%}
+            "global_preference": {{bgp['preference']}},
+        {%- endif %}
+        {%- if bgp.get('group') -%}
+            "groups": [
+            {%- if bgp['group'] is mapping -%}
+                { {{ doGroup(bgp['group']) }} }
+            {%- else -%}
+                {%- for group in bgp['group'] -%}
+                    { {{ doGroup(group) }} }{%- if not loop.last -%},{%- endif -%}
+                {%- endfor -%}
+            {%- endif -%}
+            ]
+        {%- endif -%}
+    {%- endif -%}
+}
+{%- endmacro -%}
+{%- macro doInstance(instance) -%}
+    {%- if instance['protocols'] -%}
+        {%- set protocols = instance['protocols'] -%}
+        {{doProtocols(protocols)}}
+    {%- endif -%}
+{%- endmacro -%}
+
+{
+{%- if data['configuration'] %}
+    {%- if data['configuration']['protocols'] -%}
+        {%- set protocols = data['configuration']['protocols'] -%}
+        "name": "Global Router",
+        {{doProtocols(protocols)}}
+    {%- elif data['configuration']['routing-instances'] %}
+        {%- if data['configuration']['routing-instances'] is mapping -%}
+            {%- set instance = data['configuration']['routing-instances']['instance'] -%}
+            "name": "{{instance['name']}}",
+            {{doInstance(instance)}}
+        {%- endif -%}
+    {%- endif %}
+{%- endif %}
+}

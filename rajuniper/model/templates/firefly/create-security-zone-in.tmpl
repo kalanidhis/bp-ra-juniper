@@ -1,0 +1,11 @@
+{
+    {% set security_zone = data['security_zone'] if 'security_zone' in data else 'untrust' %}
+    "security_zone": "{{ security_zone }}",
+    "interface": "{{ data['name'] }}",
+    {% set services = data['system_services'] if 'system_services' in data else ["http", "https", "ssh", "telnet", "dhcp", "ping", "netconf"] %}
+    "system_services": [
+        {% for service in services %}
+        "{{ service }}"{% if not loop.last %},{% endif %}
+        {% endfor %}
+    ]
+}

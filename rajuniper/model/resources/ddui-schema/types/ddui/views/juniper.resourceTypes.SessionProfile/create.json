@@ -1,0 +1,52 @@
+{
+  "type": "form",
+  "version": "2.0",
+  "cells": [
+    {
+      "children": [
+        {
+          "model": "label"
+        },
+        {
+          "model": "description"
+        },
+        {
+          "model": "autoClean"
+        }
+      ],
+      "label": "General"
+    },
+    {
+      "label": "Type Group",
+      "children": [
+        {
+          "model": "properties.typeGroup",
+          "label": "RA Type Group",
+          "description": "This value is supplied by the RA and should generally not be changed."
+        }
+      ]
+    },
+    {
+      "label": "Authentication",
+      "children": [
+        {
+          "model": "properties.authentication.netconf.username",
+          "label": "NETCONF Username"
+        },
+        {
+          "model": "properties.authentication.netconf.password",
+          "label": "NETCONF Password"
+        }
+      ]
+    },
+    {
+      "label": "Connection",
+      "children": [
+        {
+          "model": "properties.connection.netconf.hostport",
+          "label": "NETCONF Host Port"
+        }
+      ]
+    }
+  ]
+}
