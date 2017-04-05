@@ -4,7 +4,6 @@
     "tests": [
     ],
     "endpoint-parameters": {
-
     },
     "out-path": [
     ],
@@ -15,7 +14,6 @@
             "parameters": {
                 "function": "rajuniper.command_utils.convert_enni_flag_bool_string"
             }
-
         },
         {
             "type": "bpprov.translators.route.Branch",
