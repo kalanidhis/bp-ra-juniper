@@ -2,8 +2,10 @@
     "type": "bpprov.runners.simple.Sequence",
     "endpoint": "null",
     "endpoint-parameters": {
+	
     },
     "out-path": [
+	
     ],
     "in-path": [
         {
