@@ -1,5 +1,4 @@
 {
-
    "authentication":{
       "netconf":{
          "username":"blueplanet",
@@ -14,5 +13,4 @@
    },
    "typeGroup":"/typeGroups/Juniper",
    "id":"1"
-
 }
