@@ -1,8 +1,7 @@
 {
     "endpoint": "null",
     "type": "bpprov.runners.simple.Sequence",
-    "endpoint-parameters": {
-        
+    "endpoint-parameters": {        
     },
     "out-path": [
     ],
