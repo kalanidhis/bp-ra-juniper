@@ -1,4 +1,5 @@
 {
+
     "endpoint": "netconf",
     "type": "bpprov.runners.simple.Sequence",
     "tests": [],
@@ -7,4 +8,5 @@
     },
     "out-path": [],
     "in-path": []
+
 }

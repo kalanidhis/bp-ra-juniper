@@ -1,4 +1,5 @@
 {
+
     "type": "bpprov.runners.simple.Sequence",
     "endpoint": "null",
     "endpoint-parameters": {
@@ -40,4 +41,5 @@
             }
         }
     ]
+
 }
