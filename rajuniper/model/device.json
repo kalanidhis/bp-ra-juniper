@@ -31,6 +31,7 @@
             ""
         ]
     },
+    
     "JuniperPTX3000": {
         "family": "JuniperPTX3000",
         "dir": "ptx3000/ptx3000",
@@ -62,3 +63,4 @@
         ]
     }
 }
+
